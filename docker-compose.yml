@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:4.4
+    ports:
+      - "27017:27017"
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_DB_URL=mongodb://mongo:27017/node-api
+    depends_on:
+      - mongo
+
