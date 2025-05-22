@@ -48,6 +48,20 @@ pipeline {
                 sh 'docker-compose up --build -d'
             }
         }
+stage('Release') {
+  steps {
+    echo 'Creating a Git release tag...'
+    withCredentials([usernamePassword(credentialsId: 'github-push-token', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+      sh '''
+        git config user.name "$GIT_USERNAME"
+        git config user.email "$GIT_USERNAME@users.noreply.github.com"
+        git tag -a "v1.0.$BUILD_NUMBER" -m "Release v1.0.$BUILD_NUMBER"
+        git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/bivin-88/node-api.git --tags
+      '''
+    }
+  }
+}
+
  
     }
 }
