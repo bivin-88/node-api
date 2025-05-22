@@ -21,5 +21,20 @@ pipeline {
                 sh 'npm test || echo "Tests failed!"'
             }
         }
+
+        stage('Code Quality - SonarQube') {
+            steps {
+                withSonarQubeEnv('SonarQubeLocal') {
+                    sh 'sonar-scanner'
+                }
+            }
+        }
+
+        stage('Security Scan - Snyk') {
+            steps {
+                echo 'Running Snyk security scan...'
+                sh 'snyk test || echo "Snyk found vulnerabilities"'
+            }
+        }
     }
 }
