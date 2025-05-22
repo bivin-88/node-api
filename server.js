@@ -5,6 +5,10 @@ const connectWithRetry = require('./db');
 const Bear = require('./app/models/bear');
 
 const app = express();
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 const port = process.env.PORT || 3000;
 
 // Middleware
