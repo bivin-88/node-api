@@ -21,6 +21,13 @@ pipeline {
                 sh 'npm test || echo "Some tests failed!"'
             }
         }
+       stage('Code Quality') {
+  steps {
+    echo 'Running ESLint...'
+    sh 'npm run lint || true'
+  }
+}
+
 
         stage('Security Scan - Snyk') {
     steps {
@@ -41,6 +48,7 @@ pipeline {
                 sh 'docker-compose up --build -d'
             }
         }
+ 
     }
 }
 
