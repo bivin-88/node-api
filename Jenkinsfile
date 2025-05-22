@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         MONGO_DB_URL = "mongodb://mongo:27017/node-api"
+        SNYK_TOKEN = credentials('SNYK_TOKEN')  // pulls token from Jenkins credentials
+
     }
 
     stages {
@@ -21,11 +23,16 @@ pipeline {
         }
 
         stage('Security Scan - Snyk') {
-            steps {
-                echo 'Running Snyk security scan...'
-                sh 'snyk test || echo "Snyk found vulnerabilities"'
-            }
-        }
+    steps {
+        echo 'Running Snyk security scan...'
+        sh '''
+            npm install -g snyk
+            snyk auth $SNYK_TOKEN
+            snyk test || echo "Snyk found vulnerabilities"
+        '''
+    }
+}
+
 
         stage('Deploy Docker') {
             steps {
