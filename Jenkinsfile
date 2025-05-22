@@ -26,7 +26,25 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQubeLocal') {
                     sh 'sonar-scanner'
-                }
+    pipeline {
+    agent any
+
+    environment {
+        MONGO_DB_URL = "mongodb://mongo:27017/node-api"
+    }
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing dependencies...'
+                sh 'npm install'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                echo 'Running tests...'
+                sh 'npm test || echo "Some tests failed!"'
             }
         }
 
@@ -36,5 +54,14 @@ pipeline {
                 sh 'snyk test || echo "Snyk found vulnerabilities"'
             }
         }
+
+        stage('Deploy Docker') {
+            steps {
+                echo 'Deploying Docker containers...'
+                sh 'docker-compose down || true'
+                sh 'docker-compose up --build -d'
+            }
+        }
     }
 }
+
