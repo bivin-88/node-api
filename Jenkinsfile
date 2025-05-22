@@ -7,10 +7,10 @@ pipeline {
 
     stages {
 
-        stage('Install Node and Dependencies') {
+        stage('Install Dependencies') {
             steps {
-                echo 'Installing Node.js manually if needed (assumes Node is preinstalled)'
-                sh 'node -v || curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - && sudo apt-get install -y nodejs'
+                echo 'Using pre-installed Node.js'
+                sh 'node -v'
                 sh 'npm install'
             }
         }
