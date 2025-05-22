@@ -1,16 +1,16 @@
-# Use Node base image
 FROM node:18
 
-# Set working directory
 WORKDIR /app
 
-# Copy files
-COPY . .
+# Install netcat for wait-for.sh
+RUN apt-get update && apt-get install -y netcat-openbsd
 
-# Install dependencies
+COPY package*.json ./
 RUN npm install
 
-# Expose port and start app
-EXPOSE 3000
-CMD ["npm", "start"]
+COPY . .
+
+RUN chmod +x wait-for.sh
+
+CMD ["./wait-for.sh", "mongo", "npm", "start"]
 

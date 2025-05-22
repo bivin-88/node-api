@@ -14,4 +14,5 @@ services:
       - MONGO_DB_URL=mongodb://mongo:27017/node-api
     depends_on:
       - mongo
+    command: ["./wait-for.sh", "mongo", "npm", "start"]
 
