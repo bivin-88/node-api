@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "echo \"No tests defined yet\" && exit 0",
-    "lint":"eslint ."
+    "lint": "eslint ."
   },
   "author": "Chris Sevilleja <scotch.io>",
   "license": "MIT",
